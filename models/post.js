@@ -16,10 +16,11 @@ const PostSchema = new Schema({
         required:true
     },
     creator:{
-        type:Object,
+        type:Schema.Types.ObjectId,
+        ref:'User',
         required: true
     },
     
 }, {timestamps:true})
 
-module.exports = mongoose.model('Posts', PostSchema);
+module.exports = mongoose.model('Post', PostSchema);

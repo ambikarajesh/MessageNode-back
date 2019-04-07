@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const feedRouter = require('./routes/feed');
+const authRouter = require('./routes/auth');
 const mongoose = require('mongoose');
 const mongoDB_URI = require('./URI').MongoDB_URI;
 const path = require('path');
@@ -33,10 +34,11 @@ app.use((req, res, next) =>{
     next();
 })
 app.use('/feed', feedRouter);
+app.use('/auth', authRouter);
 app.use((error, req, res, next)=>{
-    console.log(error);
     res.status(error.statusCode).json({
-        message:error.message
+        message:error.message,
+        data: error.data
     })
 })
 mongoose.connect(encodeURI(mongoDB_URI)).then(result => {   
