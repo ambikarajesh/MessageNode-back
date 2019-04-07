@@ -2,6 +2,7 @@ const express = require('express')
 const {check} = require('express-validator/check');
 const User = require('../models/user');
 const authController = require('../controllers/auth');
+const isAuth = require('../middleware/isAuth');
 const router = express.Router();
 
 router.put('/signup',[check('email').isEmail().withMessage('Please Enter Valid Email !!!').normalizeEmail().custom((value, {req})=>{
@@ -15,4 +16,6 @@ router.put('/signup',[check('email').isEmail().withMessage('Please Enter Valid E
                     check('name').trim().not().isEmpty(),
                     check("password").isLength({min:8}).withMessage("Password Should be Combination of One Uppercase , One Lower case, One Special Char, One Digit and atleast 8 Charaters !!!").trim()], authController.putSignup);
 router.post('/login', authController.postLogin)
+router.get('/status', isAuth, authController.getStatus);
+router.post('/status', isAuth, authController.postStatus);
 module.exports = router;
