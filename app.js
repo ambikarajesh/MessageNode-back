@@ -3,10 +3,14 @@ const bodyParser = require('body-parser');
 const feedRouter = require('./routes/feed');
 const authRouter = require('./routes/auth');
 const mongoose = require('mongoose');
-const mongoDB_URI = require('./URI').MongoDB_URI;
 const path = require('path');
 const multer = require('multer');
+const compression = require('compression');
+const helmet = require('helmet');
 const app = express();
+
+const mongoDB_URI = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PWD}@cluster0-btzl5.mongodb.net/${process.env.MONGO_DATABASE}`;
+
 var fileStorage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, 'images');
@@ -33,6 +37,8 @@ app.use((req, res, next) =>{
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     next();
 })
+app.use(helmet());
+app.use(compression());
 app.use('/feed', feedRouter);
 app.use('/auth', authRouter);
 app.use((error, req, res, next)=>{
