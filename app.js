@@ -8,7 +8,8 @@ const multer = require('multer');
 const compression = require('compression');
 const helmet = require('helmet');
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
+
 const mongoDB_URI = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PWD}@cluster0-btzl5.mongodb.net/${process.env.MONGO_DATABASE}`;
 
 var fileStorage = multer.diskStorage({
@@ -48,5 +49,7 @@ app.use((error, req, res, next)=>{
     })
 })
 mongoose.connect(encodeURI(mongoDB_URI)).then(result => {   
-    app.listen(PORT)
+    app.listen(PORT, ()=>{
+        console.log(`Server Start in port ${PORT}`);
+    })
 }).catch(err =>console.log(err))

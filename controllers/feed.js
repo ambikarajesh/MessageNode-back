@@ -6,7 +6,7 @@ const {validationResult} = require('express-validator/check');
 exports.getPosts = (req, res, next) =>{
     const currentPage = req.query.page;
     const perPage = 2;
-    let totalItems = 1;
+    let totalItems = 0;
     Post.find().countDocuments().then(count => {
         totalItems = count || 1;
         return Post.find().skip((currentPage - 1) *perPage).limit(perPage);
